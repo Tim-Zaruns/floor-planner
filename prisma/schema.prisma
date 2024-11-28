@@ -1,0 +1,30 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model RoomPlan {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  rooms     Json     @default("[]")
+}
+
+// model Room {
+//   id          String    @id @default(cuid())
+//   name        String
+//   type        String    // 'rectangular' or 'custom'
+//   dimensions  Json?     // For rectangular rooms
+//   walls       Json?     // For custom rooms
+//   points      Json      // Array of points
+//   roomPlanId  String
+//   roomPlan    RoomPlan  @relation(fields: [roomPlanId], references: [id])
+// }
