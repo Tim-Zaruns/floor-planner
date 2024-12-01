@@ -29,6 +29,7 @@ function RoomSidebar() {
   const currentRoomData = rooms.find((room) => room.id === currentRoom)
   const currentRoomIndex = rooms.findIndex((room) => room.id === currentRoom)
   const { toast } = useToast()
+  const { errors } = formState
 
   // Get selected furniture data
   const selectedFurniture = furniture.find((f) => f.id === selectedId)
@@ -40,18 +41,40 @@ function RoomSidebar() {
   // Project actions
   const handleSaveProject = async () => {
     const isValid = await trigger()
-
-    // Add detailed error logging
+    
     if (!isValid) {
-      console.error('Form validation failed')
-      console.log('Validation errors:', formState.errors)
-      // Optional: Log specific field errors
-      Object.entries(formState.errors).forEach(([field, error]) => {
-        console.log(`${field}:`, error.message)
-        // If nested fields have errors
-        if (error.type === 'object' && error.fields) {
-          console.log(`${field} nested errors:`, error.fields)
+      // Find all rooms with errors
+      const roomErrors = Object.keys(errors.rooms || {}).map(index => {
+        const room = getValues(`rooms.${index}`)
+        return {
+          name: room.name,
+          index: index
         }
+      })
+
+      // Show error toast with rooms that have issues
+      toast({
+        variant: "destructive",
+        title: "Validation Error",
+        description: (
+          <div className="mt-2">
+            <p>Please fix errors in the following rooms:</p>
+            <ul className="list-disc pl-4 mt-2">
+              {roomErrors.map(room => (
+                <li 
+                  key={room.index} 
+                  className="cursor-pointer hover:underline"
+                  onClick={() => {
+                    setValue('currentRoom', getValues(`rooms.${room.index}.id`))
+                  }}
+                >
+                  {room.name || `Room ${Number(room.index) + 1}`}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ),
+        duration: 5000, // Show for 5 seconds
       })
       return
     }
@@ -154,6 +177,12 @@ function RoomSidebar() {
     })
   }
 
+  // Optional: Add error indicators to room badges
+  const getRoomErrorStatus = (roomId) => {
+    const roomIndex = rooms.findIndex(r => r.id === roomId)
+    return errors.rooms?.[roomIndex] ? true : false
+  }
+
   return (
     <div className="w-[400px] h-screen border-l p-6 overflow-y-auto">
       <Card>
@@ -196,10 +225,15 @@ function RoomSidebar() {
               <Badge
                 key={room.id}
                 variant={currentRoom === room.id ? 'default' : 'outline'}
-                className="cursor-pointer group relative"
+                className={`cursor-pointer group relative ${
+                  getRoomErrorStatus(room.id) ? 'border-red-500' : ''
+                }`}
                 onClick={() => setValue('currentRoom', room.id)}
               >
                 {room.name} ({getRoomArea(room).toFixed(2)}m²)
+                {getRoomErrorStatus(room.id) && (
+                  <span className="ml-1 text-red-500">⚠️</span>
+                )}
                 <button
                   className="ml-2 opacity-0 group-hover:opacity-100 hover:text-destructive"
                   onClick={(e) => {

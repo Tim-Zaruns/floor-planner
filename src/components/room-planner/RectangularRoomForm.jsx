@@ -26,6 +26,8 @@ export function RectangularRoomForm({ roomIndex }) {
                 max="2000"
                 placeholder="500"
                 {...field}
+                onChange={(e) => field.onChange(Number(e.target.value))}
+                value={field.value || ''}
               />
             </FormControl>
             <FormMessage />
@@ -46,6 +48,8 @@ export function RectangularRoomForm({ roomIndex }) {
                 max="2000"
                 placeholder="400"
                 {...field}
+                onChange={(e) => field.onChange(Number(e.target.value))}
+                value={field.value || ''}
               />
             </FormControl>
             <FormMessage />
@@ -66,6 +70,8 @@ export function RectangularRoomForm({ roomIndex }) {
                 max="50"
                 placeholder="20"
                 {...field}
+                onChange={(e) => field.onChange(Number(e.target.value))}
+                value={field.value || ''}
               />
             </FormControl>
             <FormMessage />
