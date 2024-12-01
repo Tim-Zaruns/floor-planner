@@ -40,13 +40,15 @@ export default function useRoomViewState(stageSize) {
     if (!currentRoom) return defaultView
 
     // Return existing room state or create new centered state
-    return roomViewStates[currentRoom] ?? {
-      ...defaultView,
-      groupPosition: {
-        x: stageSize.width / 2,
-        y: stageSize.height / 2,
-      },
-    }
+    return (
+      roomViewStates[currentRoom] ?? {
+        ...defaultView,
+        groupPosition: {
+          x: stageSize.width / 2,
+          y: stageSize.height / 2,
+        },
+      }
+    )
   }, [currentRoom, roomViewStates, stageSize.width, stageSize.height])
 
   // Update group position when switching rooms
@@ -58,7 +60,7 @@ export default function useRoomViewState(stageSize) {
   // Initialize new room state when switching to an unseen room
   useEffect(() => {
     if (currentRoom && !roomViewStates[currentRoom]) {
-      setRoomViewStates(prev => ({
+      setRoomViewStates((prev) => ({
         ...prev,
         [currentRoom]: {
           ...defaultView,
@@ -96,7 +98,7 @@ export default function useRoomViewState(stageSize) {
     }
 
     // Update the room's view state
-    setRoomViewStates(prev => ({
+    setRoomViewStates((prev) => ({
       ...prev,
       [currentRoom]: {
         ...prev[currentRoom],
@@ -114,7 +116,7 @@ export default function useRoomViewState(stageSize) {
     if (!currentRoom) return
 
     const newPosition = e.target.position()
-    setRoomViewStates(prev => ({
+    setRoomViewStates((prev) => ({
       ...prev,
       [currentRoom]: {
         ...prev[currentRoom],
@@ -138,7 +140,7 @@ export default function useRoomViewState(stageSize) {
     }
 
     // Reset the room's state to default
-    setRoomViewStates(prev => ({
+    setRoomViewStates((prev) => ({
       ...prev,
       [currentRoom]: {
         ...defaultView,

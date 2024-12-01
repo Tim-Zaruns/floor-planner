@@ -6,14 +6,14 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { Button } from "@/components/ui/button"
+} from '@/components/ui/table'
+import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { CreateProjectDialog } from '@/components/projects/CreateProjectDialog'
 
 export default async function ProjectsPage() {
   const projects = await prisma.roomPlan.findMany({
-    orderBy: { createdAt: 'desc' }
+    orderBy: { createdAt: 'desc' },
   })
 
   return (

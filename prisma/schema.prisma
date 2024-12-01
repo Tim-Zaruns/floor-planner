@@ -17,14 +17,3 @@ model RoomPlan {
   updatedAt DateTime @updatedAt
   rooms     Json     @default("[]")
 }
-
-// model Room {
-//   id          String    @id @default(cuid())
-//   name        String
-//   type        String    // 'rectangular' or 'custom'
-//   dimensions  Json?     // For rectangular rooms
-//   walls       Json?     // For custom rooms
-//   points      Json      // Array of points
-//   roomPlanId  String
-//   roomPlan    RoomPlan  @relation(fields: [roomPlanId], references: [id])
-// }
