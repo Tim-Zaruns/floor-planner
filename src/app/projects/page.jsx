@@ -1,14 +1,5 @@
 import { prisma } from '@/lib/prisma'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
-import { Button } from '@/components/ui/button'
-import Link from 'next/link'
+import { ProjectsTableClient } from '@/components/projects/ProjectsTableClient'
 import { CreateProjectDialog } from '@/components/projects/CreateProjectDialog'
 
 export default async function ProjectsPage() {
@@ -22,40 +13,7 @@ export default async function ProjectsPage() {
         <h1 className="text-3xl font-bold">Projects</h1>
         <CreateProjectDialog />
       </div>
-
-      {projects.length === 0 ? (
-        <div className="flex flex-col items-center justify-center min-h-[400px] border rounded-lg">
-          <p className="text-muted-foreground mb-4">No projects found</p>
-        </div>
-      ) : (
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>ID</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead></TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {projects.map((project) => (
-              <TableRow key={project.id}>
-                <TableCell>{project.id}</TableCell>
-                <TableCell>{project.name}</TableCell>
-                <TableCell>
-                  <Button variant="ghost" asChild>
-                    <Link
-                      className="text-sm font-medium text-muted-foreground"
-                      href={`/projects/${project.id}`}
-                    >
-                      View
-                    </Link>
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      )}
+      <ProjectsTableClient initialProjects={projects} />
     </div>
   )
 }

@@ -24,13 +24,14 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { createProject } from '@/app/actions/actions'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 const formSchema = z.object({
   name: z.string().min(1, 'Name is required'),
 })
 
 export function CreateProjectDialog() {
+  const router = useRouter()
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,8 +45,8 @@ export function CreateProjectDialog() {
       formData.append('name', data.name)
 
       const project = await createProject(formData)
-      console.log(project)
-      redirect(`/projects/${project.id}`)
+      router.push(`/projects/${project.id}`)
+
     } catch (error) {
       console.error(error)
     }

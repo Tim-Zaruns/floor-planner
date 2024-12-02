@@ -33,3 +33,15 @@ export async function saveRoomPlan(formData) {
       return { success: false, error: error.message }
     }
   }
+
+export async function deleteProject(id) {
+  try {
+    await prisma.roomPlan.delete({
+      where: { id }
+    })
+    return { success: true }
+  } catch (error) {
+    console.error('Failed to delete project:', error)
+    return { success: false, error: error.message }
+  }
+}
