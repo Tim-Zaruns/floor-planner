@@ -2,6 +2,8 @@ import { prisma } from '@/lib/prisma'
 import { ProjectsTableClient } from '@/components/projects/ProjectsTableClient'
 import { CreateProjectDialog } from '@/components/projects/CreateProjectDialog'
 
+export const dynamic = 'force-dynamic'
+
 export default async function ProjectsPage() {
   const projects = await prisma.roomPlan.findMany({
     orderBy: { createdAt: 'desc' },
