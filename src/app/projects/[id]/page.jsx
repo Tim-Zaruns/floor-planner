@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma'
 import RoomPlannerClient from '@/components/projects/RoomPlannerClient'
 import { Suspense } from 'react'
 
+export const dynamic = 'force-dynamic'
 // Optional loading component
 const Loading = () => (
   <div className="flex items-center justify-center min-h-screen">
